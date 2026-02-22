@@ -1,4 +1,26 @@
+import { useEffect } from "react";
+import ProgressBar from "./ProgressBar";
+
+const TIMER = 3000
+
 export default function DeleteConfirmation({ onConfirm, onCancel }) {
+  useEffect(() => {
+    console.log('Timer Set')
+    const timer = setTimeout(() => {
+      onConfirm();
+    }, TIMER);
+
+    //El return de useEffect se ejecuta justo ANTES de que el useEffect se vuelva a ejecutar
+    //o justo antes que el componente se desmonte de la UI (del DOM)
+    return () => {
+      console.log('Cleaning timer')
+      clearTimeout(timer);
+    }
+
+    //Se pasa la dependencia de la funcion, pero hay que tener cuidado por que cada
+    //reenderizado donde se encuentra la funcion, es un objeto diferente y activa el useEffect()
+  }, [onConfirm])
+
   return (
     <div id="delete-confirmation">
       <h2>Are you sure?</h2>
@@ -11,6 +33,10 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
           Yes
         </button>
       </div>
+
+      {/*Se usa el ProgessBar en un componente aparte para tener que checar si todo lo demas se tiene que volver a renderdizar*/}
+      {/*cada vez que se actualiza el ProgressBar*/}
+      <ProgressBar timer={TIMER} />
     </div>
   );
 }
