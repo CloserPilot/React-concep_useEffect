@@ -10,8 +10,9 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
       onConfirm();
     }, TIMER);
 
-    //El return de useEffect se ejecuta justo ANTES de que el useEffect se vuelva a ejecutar
-    //o justo antes que el componente se desmonte de la UI (del DOM)
+    //El return de useEffect se ejecuta:
+    //*ANTES de que el useEffect se vuelva a ejecutar
+    //*ANTES que el componente se desmonte de la UI (del DOM)
     return () => {
       console.log('Cleaning timer')
       clearTimeout(timer);
@@ -34,7 +35,7 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
         </button>
       </div>
 
-      {/*Se usa el ProgessBar en un componente aparte para tener que checar si todo lo demas se tiene que volver a renderdizar*/}
+      {/*Se usa el ProgessBar en un componente aparte para no tener que checar si todo lo demas se tiene que volver a renderdizar*/}
       {/*cada vez que se actualiza el ProgressBar*/}
       <ProgressBar timer={TIMER} />
     </div>
